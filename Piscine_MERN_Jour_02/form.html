@@ -1,0 +1,65 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Insert data</title>
+</head>
+
+<body>
+    <div class="container ">
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <br>
+        <h1>Please insert the data</h1>
+        <form action="./insert" method="POST">
+            <div class="form-group">
+                <label for="firstname">First Name</label>
+                <input type="text" class="form-control" name="student[firstname]" id="firstname" placeholder="First Name">
+            </div>
+            <div class="form-group">
+                <label for="lastname">Last Name</label>
+                <input type="text" class="form-control" name="student[lastname]" id="lastname" placeholder="Last Name">
+            </div>
+            <div class="form-group">
+                <label for="email">Email address</label>
+                <input type="email" class="form-control" id="email" name="student[email]" aria-describedby="emailHelp" placeholder="Enter email">
+                <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
+            </div>
+            <div class="form-group">
+                <label for="phone">Phone</label>
+                <input type="tel" class="form-control" name="student[phone]" id="phone">
+            </div>
+            <div class="form-group">
+                <label for="validated">Validated</label>
+                <select class="form-control" id="validated" name="student[validated]">
+                    <option>in progress</option>
+                    <option>validated</option>
+                    <option>rejected</option>
+                </select>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="student[admin]" id="true" value="true" checked>
+                <label class="form-check-label" for="true">
+                  True
+                </label>
+            </div>
+            <div class="form-check">
+                <input class="form-check-input" type="radio" name="student[admin]" id="false" value="false">
+                <label class="form-check-label" for="false">
+                  False
+                </label>
+            </div>
+            <br>
+            <button type="submit" class="btn btn-primary">Submit</button>
+        </form>
+    </div>
+
+</body>
+
+</html>

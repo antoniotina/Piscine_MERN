@@ -1,0 +1,41 @@
+db.createCollection('students', {
+    validator: {
+        $jsonSchema: {
+            bsonType: 'object',
+                properties: {
+                    id: {
+                        bsonType: 'int'
+                    },
+                    lastname: {
+                        bsonType: 'string'
+                    },
+                    firstname: {
+                        bsonType: 'string'
+                    },
+                    email: { 
+                        bsonType: 'string', 
+                        pattern: '^[A-Z0-9._%+-]+@[A-Z0-9.-]+.[A-Z]{2,}$',
+                        description: 'Must be a string and match the regular expression pattern'
+                    }, 
+                    phone: { 
+                        bsonType: 'int', 
+                        pattern: '^((\\+)33|0)[1-9](\\d{2}){4}$',
+                        description: 'Must be a string and match the regular expression pattern'
+                    }, 
+                    validated: {
+                        bsonType: 'string', 
+                        pattern: '^(in progress|validated|rejected)$',
+                        description: 'Must be a string and match the regular expression pattern'
+                    },
+                    admin: {
+                        bsonType: 'bool'
+                    }
+                }
+        }
+    }
+});
+
+
+db.students.insert({id: 1, lastname: "Tina", firstname: "Antonio", email: "antonio.tina@epitech.eu", phone: 0909090909, validated: "validated", admin: true})
+
+var allKeys = {}; db.students.find().forEach(function(doc){Object.keys(doc).forEach(function(key){allKeys[key]=1})}); allKeys;

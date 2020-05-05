@@ -1,0 +1,65 @@
+mongod --port 27042
+use mern-pool
+
+
+db.createCollection( "students",
+{
+    validator: {
+        firstname: { $type: "string" },
+        lastname: { $type: "string" },
+        email: { $regex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/ },
+        phone: { $regex: /^0[1-9]{1}(([0-9]{2}){4})|((\s[0-9]{2}){4})|((-[0-9]{2}){4})$/  },
+        validated: { $in: [ "in progress", "validated" , "rejected" ] },
+        admin: { $type: "bool" }
+    },
+    validationAction: "error",
+    validationLevel: "strict"
+})
+
+
+db.students.insert( { firstname: "Antonio", lastname: "Tina", email: "antonio.tina@epitech.eu", phone: "0909090909", validated: "validated", admin: true } )
+
+
+
+
+
+
+
+
+
+
+
+
+db.createCollection( "students",
+{
+    validator: {
+        $jsonSchema: {
+            bsonType: "object",
+            required: ["validated", "firstname", "email"],
+            properties: {
+                lastname: {
+                bsonType: "string"
+                },
+                firstname: {
+                bsonType: "string"
+                },
+                email: {
+                bsonType: "string",
+                pattern: "^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$"
+                },
+                phone: {
+                bsonType: "string",
+                pattern: "^0[1-9]{1}(([0-9]{2}){4})|((\s[0-9]{2}){4})|((-[0-9]{2}){4})$"
+                },
+                validated: {
+                enum: ["in progress", "validated", "rejected"]
+                },
+                admin: {
+                bsonType: "bool"
+                }
+            }
+        },
+    validationAction: "error",
+    validationLevel: "strict"
+    }
+})
