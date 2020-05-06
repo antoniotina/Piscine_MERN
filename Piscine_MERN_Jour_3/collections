@@ -1,0 +1,45 @@
+db.createCollection( "users",
+{
+    validator: {
+        username: { $regex: /^[a-zA-Z0-9]{5,20}$/ },
+        email: { $regex: /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+.[a-zA-Z]{2,}$/ },
+        password: { $type: "string" },
+        admin: { $type: "bool" }
+    },
+    validationAction: "error",
+    validationLevel: "strict"
+})
+
+db.users.createIndex( { "username": 1 }, { unique: true } )
+db.users.createIndex( { "email": 1 }, { unique: true } )
+
+db.users.insert({ username: "antonio", email: "antonio.tina@epitech.eu", password: "testpassword", admin: true})
+db.users.insert({ username: "antoniotest", email: "antonio.tina@epitech.eu", password: "testpassword", admin: true})
+
+db.users.insert({ username: "nordine", email: "nordine.elbarkaoui@epitech.eu", password: "testpassword", admin: false})
+db.users.insert({ username: "nordinetest", email: "nordine.elbarkaoui@epitech.eu", password: "testpassword", admin: false})
+
+db.users.insert({ username: "victor", email: "victor.reyes@epitech.eu", password: "testpassword", admin: false})
+db.users.insert({ username: "victortest", email: "victor.reyes@epitech.eu", password: "testpassword", admin: false})
+
+
+db.createCollection( "products",
+{
+    validator: {
+        title: { $type: "string" },
+        price: { $type: "number" },
+        description: { $type: "string" }
+    },
+    validationAction: "error",
+    validationLevel: "strict"
+})
+
+
+db.products.createIndex( { "title": 1 }, { unique: true } )
+
+
+db.products.insert({ title: "Opel", price: 10000, description: "a slow car"})
+db.products.insert({ title: "Ferrari", price: 100000, description: "a fast car"})
+db.products.insert({ title: "Hummer", price: 100000, description: "a big car"})
+db.products.insert({ title: "Smart", price: 10000, description: "a smol car"})
+db.products.insert({ title: "Mustang", price: 10000, description: "a muscle car"})
