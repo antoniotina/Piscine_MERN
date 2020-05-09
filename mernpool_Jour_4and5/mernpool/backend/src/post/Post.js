@@ -20,11 +20,13 @@ let PostSchema = new mongoose.Schema({
     creator: {
         type: Schema.Types.ObjectId,
         ref: 'User'
-    }
-    // category: {
-    //     type: Schema.Types.ObjectId,
-    //     ref: 'Category'
-    // }
+    },
+    comments: [
+        {
+            type: Schema.Types.ObjectId,
+            ref: 'Comment'
+        }
+    ]
 })
 
 let Post = mongoose.model('Post', PostSchema)

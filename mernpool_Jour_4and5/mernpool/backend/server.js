@@ -8,6 +8,7 @@ const config = require('config')
 const userRoutes = require('./src/user/api')
 const authRoutes = require('./src/auth/api')
 const postRoutes = require('./src/post/api')
+const commentsRoutes = require('./src/comment/api')
 
 const db = config.get('mongoURI')
 const port = process.env.PORT || 8000
@@ -33,6 +34,7 @@ mongoose
 app.use('/api/users', userRoutes)
 app.use('/api/auth', authRoutes)
 app.use('/api/posts', postRoutes)
+app.use('/api/comments', commentsRoutes)
 
 app.get('/', function(req, res) {
     res.send('index')

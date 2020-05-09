@@ -1,5 +1,5 @@
 import React, { Component } from 'react'
-import { Container, ListGroup, ListGroupItem, Button } from 'reactstrap'
+import { Container, ListGroup, ListGroupItem, Button, NavLink } from 'reactstrap'
 import { connect } from 'react-redux'
 import { getUserPosts, deletePost } from '../../actions/postActions'
 import PropTypes from 'prop-types'
@@ -36,10 +36,10 @@ class PostList extends Component {
         return (
             <Container>
                 <ListGroup className="pt-4">
-                    {posts.map(({ title, content, date, _id }) =>
-                        <ListGroupItem>
-                            {user ?
-                                id == user._id ?
+                    {posts.map(({ title, content, date, creator, _id }) =>
+                        <ListGroupItem key={_id}>
+                            {isAuthenticated ?
+                                id === user._id ?
                                     <Button
                                         className="remove-btn"
                                         color="danger"
@@ -50,9 +50,11 @@ class PostList extends Component {
                                     </Button> : null
                                 : null}
 
-                            <p>{title}</p>
-                            <p>{content}</p>
-                            <p>{date}</p>
+                            <a
+                                href={'/' + creator + '/' + _id}
+                            >
+                                {title}
+                            </a>
                         </ListGroupItem>
                     )}
 

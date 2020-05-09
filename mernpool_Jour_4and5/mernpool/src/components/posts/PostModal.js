@@ -4,7 +4,6 @@ import {
 } from 'reactstrap'
 import { connect } from 'react-redux'
 import { addPost } from '../../actions/postActions'
-import { clearErrors } from '../../actions/errorActions'
 import PropTypes from 'prop-types'
 
 class PostModal extends Component {
@@ -59,8 +58,8 @@ class PostModal extends Component {
         return (
             <div>
 
-                {user ?
-                    id == user._id ?
+                { isAuthenticated ?
+                    id === user._id ?
                         <Button
                             color="dark"
                             className="mb-2"

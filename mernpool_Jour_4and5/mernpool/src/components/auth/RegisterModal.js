@@ -27,8 +27,8 @@ class RegisterModal extends Component {
     componentDidUpdate(prevProps) {
         const { error, isAuthenticated } = this.props
 
-        if (error != prevProps.error) {
-            if (error.id == 'REGISTER_FAIL') {
+        if (error !== prevProps.error) {
+            if (error.id === 'REGISTER_FAIL') {
                 // in redux, you can see on the tree that it's MSG > MSG: "VALUE" that;s why it's double msg
                 this.setState({ msg: error.msg.msg })
             }

@@ -1,29 +1,24 @@
-import React, { useState, Component, Fragment } from 'react'
+import React, { Component, Fragment } from 'react'
 import {
-    Collapse,
     Navbar,
-    NavbarToggler,
     NavbarBrand,
     Nav,
     NavItem,
-    NavLink,
-    UncontrolledDropdown,
-    DropdownToggle,
-    DropdownMenu,
-    DropdownItem,
-    NavbarText
+    NavLink
 } from 'reactstrap'
 import RegisterModal from './auth/RegisterModal'
 import LoginModal from './auth/LoginModal'
 import Logout from './auth/Logout'
 import { connect } from 'react-redux'
 import PropTypes from 'prop-types'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
-import PostList from './posts/PostList'
+import { searchPost } from '../actions/postActions'
+import { BrowserRouter as Router } from 'react-router-dom'
 
 class IndexNavbar extends Component {
+
     state = {
-        isOpen: false
+        isOpen: false,
+        search: ''
     }
 
     static propTypes = {
@@ -31,7 +26,12 @@ class IndexNavbar extends Component {
     }
 
     render() {
-        const { user, isAuthenticated } = this.props.auth
+        const { posts } = this.props.post
+
+        const { user, isAuthenticated, isLoading } = this.props.auth
+
+        let id = window.location.href.split('/')
+        id = id[id.length - 1]
 
         const authLinks = (
             <Fragment>
@@ -41,11 +41,17 @@ class IndexNavbar extends Component {
                     </NavItem>
                     <NavItem>
                         <NavLink
-                            // href="/:id"
                             href={user ? '/' + user._id : null}
                         >
                             Profile
-                    </NavLink>
+                        </NavLink>
+                    </NavItem>
+                    <NavItem>
+                        <NavLink
+                            href="/search/user/posts/"
+                        >
+                            Search posts
+                        </NavLink>
                     </NavItem>
                     <NavItem>
                         <Logout />
@@ -71,7 +77,7 @@ class IndexNavbar extends Component {
                 <Navbar color="light" light expand="md">
                     <NavbarBrand href="/">Mern-pool</NavbarBrand>
                     <Nav className="mr-auto" navbar>
-                        {isAuthenticated ? authLinks : guestLinks}
+                        {!isLoading ? isAuthenticated ? authLinks : guestLinks : null}
                     </Nav>
                 </Navbar>
             </div>
@@ -80,7 +86,11 @@ class IndexNavbar extends Component {
 }
 
 const mapStateToProps = state => ({
+    post: state.post,
     auth: state.auth
 })
 
-export default connect(mapStateToProps, null)(IndexNavbar)
+export default connect(
+    mapStateToProps,
+    { searchPost }
+)(IndexNavbar)

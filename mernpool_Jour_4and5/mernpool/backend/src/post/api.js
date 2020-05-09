@@ -15,7 +15,26 @@ router.get('/', (req, res) => {
         .then(posts => res.json(posts))
 })
 
-// get -> api/post/user
+// get -> api/post/
+router.post('/single', (req, res) => {
+    const { id } = req.body
+
+    Post.findById(id)
+        .sort({ date: -1 })
+        .then(post => res.json(post))
+})
+
+// post -> api/post/
+router.post('/search', (req, res) => {
+    const { searchValue } = req.body
+
+    Post.find({ $or: [{ title: new RegExp(searchValue.search, 'i') }, { content: new RegExp(searchValue.search, 'i') }] })
+        .then(postsearch => {
+            res.json(postsearch)
+        })
+})
+
+// post -> api/post/user
 router.post('/user', (req, res) => {
     const { id } = req.body
 
@@ -44,7 +63,7 @@ router.post('/', (req, res) => {
     newPost.save()
         .then(post => {
             if (!post) return res.status(400).json({ msg: 'The post was not added, please try again' })
-            User.findById('5eb505ae631dbb502ca004ac')
+            User.findById(creator)
                 .then(user => {
                     if (!user) return res.status(400).json({ msg: 'User does not exist' })
                     user.posts.push(post._id)
@@ -68,6 +87,6 @@ router.delete(`/:id`, (req, res) => {
         .then(post => {
             post.delete()
         })
-});
+})
 
 module.exports = router

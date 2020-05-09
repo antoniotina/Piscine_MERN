@@ -1,4 +1,4 @@
-import { GET_POSTS, UPDATE_POST, ADD_POST, DELETE_POST, POSTS_LOADING } from '../actions/types'
+import { GET_POSTS, UPDATE_POST, GET_POST, ADD_POST, DELETE_POST, POSTS_LOADING } from '../actions/types'
 
 const initialState = {
     posts: [],
@@ -7,6 +7,7 @@ const initialState = {
 
 export default function (state = initialState, action) {
     switch (action.type) {
+        case GET_POST:
         case GET_POSTS:
             return {
                 ...state,

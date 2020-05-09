@@ -5,9 +5,9 @@ import { loadUser } from './actions/authActions'
 import { Container } from 'reactstrap'
 import IndexNavbar from './components/IndexNavbar'
 import UserPosts from './components/posts/UserPosts'
-import PostList from './components/posts/PostList'
-import PostModal from './components/posts/PostModal'
-import { BrowserRouter as Router, Switch, Route } from 'react-router-dom'
+import PostDetail from './components/posts/PostDetail'
+import SearchPost from './components/posts/SearchPost'
+import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 class App extends React.Component {
 
@@ -21,9 +21,9 @@ class App extends React.Component {
                 <Provider store={store}>
                     <IndexNavbar />
                     <Container>
+                        <Route path="/:id/:postid" exact component={PostDetail} />
+                        <Route path="/search/user/posts/" exact component={SearchPost} />
                         <Route path="/:id" exact component={UserPosts} />
-                        {/* <PostModal />
-                        <PostList /> */}
                     </Container>
                 </Provider>
             </Router>
