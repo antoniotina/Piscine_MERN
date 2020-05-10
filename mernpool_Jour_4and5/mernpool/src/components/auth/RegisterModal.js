@@ -108,14 +108,6 @@ class RegisterModal extends Component {
                                     placeholder="Type password"
                                     onChange={this.onChange}
                                 />
-                                {/* <Label for="cpw">Confirm Password</Label>
-                                <Input
-                                    type="password"
-                                    name="cpw"
-                                    id="cpw"
-                                    placeholder="Type password"
-                                    onChange={this.onChange}
-                                /> */}
                                 <Button color="dark" className="mt-4" block>
                                     Register
                                 </Button>

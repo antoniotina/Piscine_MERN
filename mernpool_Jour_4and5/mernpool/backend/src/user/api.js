@@ -54,4 +54,10 @@ router.post('/', (req, res) => {
         })
 })
 
+// get -> api/user/
+router.get('/', (req, res) => {
+    User.find()
+        .then(users => res.json(users))
+})
+
 module.exports = router

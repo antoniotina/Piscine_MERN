@@ -97,7 +97,7 @@ export const addPost = ({ title, date, content, creator }) => dispatch => {
             }))
 }
 
-export const updatePost = ({ title, _id, content }) => dispatch => {
+export const updatePost = ({ title, _id, content, date }) => dispatch => {
     dispatch(setPostsLoading())
     // headers 
     const config = {
@@ -107,9 +107,9 @@ export const updatePost = ({ title, _id, content }) => dispatch => {
     }
 
     //request info
-    const body = JSON.stringify({ title, content, _id })
+    const body = JSON.stringify({ title, content, _id, date })
 
-    axios.post('http://127.0.0.1:8000/api/posts/', body, config)
+    axios.post('http://127.0.0.1:8000/api/posts/update', body, config)
         .then(res =>
             dispatch({
                 type: UPDATE_POST,

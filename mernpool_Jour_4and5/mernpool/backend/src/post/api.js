@@ -89,4 +89,18 @@ router.delete(`/:id`, (req, res) => {
         })
 })
 
+//delete api/post/update
+router.post('/update', (req, res) => {
+
+    const { title, content, _id, date } = req.body
+
+    Post.findById(_id)
+        .then(post => {
+            post.title = title
+            post.content = content
+            post.date = date
+            post.save()
+        })
+})
+
 module.exports = router

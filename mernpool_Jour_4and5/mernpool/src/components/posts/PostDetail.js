@@ -1,7 +1,7 @@
 import React, { Component } from 'react'
-import { Container, ListGroup, ListGroupItem, Button, Form, FormGroup, Label, Input } from 'reactstrap'
+import { Container, ListGroup, ListGroupItem, Button, Form, FormGroup, Label, Input, Modal, ModalHeader, ModalBody, Fragment } from 'reactstrap'
 import { connect } from 'react-redux'
-import { getSinglePost, deletePost } from '../../actions/postActions'
+import { getSinglePost, deletePost, updatePost } from '../../actions/postActions'
 import { addComment, getPostComments, deleteComment } from '../../actions/commentActions'
 import PropTypes from 'prop-types'
 
@@ -9,10 +9,13 @@ class PostDetail extends Component {
 
     state = {
         isOpen: false,
+        modal: false,
         content: '',
         date: '',
         creator: '',
-        post: ''
+        post: '',
+        postcontent: '',
+        posttitle: ''
     }
 
     static propTypes = {
@@ -28,6 +31,27 @@ class PostDetail extends Component {
 
     onChange = (e) => {
         this.setState({ [e.target.name]: e.target.value })
+    }
+
+    onUpdate = (e) => {
+        e.preventDefault()
+
+        const { user, isAuthenticated } = this.props.auth
+
+        let id = window.location.href.split('/')
+        id = id[id.length - 1]
+
+        const updatedPost = {
+            _id: id,
+            date: Date.now(),
+            content: this.state.postcontent,
+            title: this.state.posttitle
+        }
+
+        // Update a post via updatePost action
+        this.props.updatePost(updatedPost)
+
+        window.location.reload(false)
     }
 
     onSubmit = (e) => {
@@ -50,6 +74,13 @@ class PostDetail extends Component {
         this.props.addComment(newComment)
 
         window.location.reload(false)
+    }
+
+    toggle = () => {
+        // this.props.clearErrors()
+        this.setState({
+            modal: !this.state.modal
+        })
     }
 
     onDeletePostClick = _id => {
@@ -78,14 +109,25 @@ class PostDetail extends Component {
                         <ListGroupItem key={posts._id}>
                             {isAuthenticated ?
                                 id === user._id ?
-                                    <Button
-                                        className="remove-btn"
-                                        color="danger"
-                                        size="sm"
-                                        onClick={this.onDeletePostClick.bind(this, posts._id)}
-                                    >
-                                        &times;
-                                </Button> : null
+                                    <div>
+                                        <Button
+                                            className="remove-btn"
+                                            color="danger"
+                                            size="sm"
+                                            onClick={this.onDeletePostClick.bind(this, posts._id)}
+                                        >
+                                            &times;
+                                        </Button>
+
+                                        <Button
+                                            color="dark"
+                                            className="mb-2 ml-2 mt-2"
+                                            onClick={this.toggle}
+                                        >
+                                            Update post
+                                        </Button>
+                                    </div>
+                                    : null
                                 : null}
                             <h1>
                                 {posts.title}
@@ -121,19 +163,70 @@ class PostDetail extends Component {
                             </Form>
                             : null
                         }
+
                         <ListGroup className="pt-4">
+                            <h5>Comments</h5>
                             {comments ? comments.map(({ content, date, creator, post, _id }) =>
                                 <ListGroupItem key={_id}>
                                     {isAuthenticated ?
                                         posts.creator === user._id ?
-                                            <Button
-                                                className="remove-btn"
-                                                color="danger"
-                                                size="sm"
-                                                onClick={this.onDeleteClick.bind(this, _id)}
+                                            <div>
+                                                <Button
+                                                    className="remove-btn"
+                                                    color="danger"
+                                                    size="sm"
+                                                    onClick={this.onDeleteClick.bind(this, _id)}
+                                                >
+                                                    &times;
+                                                </Button>
+                                            </div>
+                                            : null
+                                        : null}
+
+                                    {isAuthenticated ?
+                                        posts.creator === user._id ?
+                                            <Modal
+                                                isOpen={this.state.modal}
+                                                toggle={this.toggle}
                                             >
-                                                &times;
-                                    </Button> : null
+                                                <ModalHeader toggle={this.toggle}>
+                                                    Update post
+                                                </ModalHeader>
+                                                <ModalBody>
+                                                    <Form onSubmit={this.onUpdate}>
+                                                        <FormGroup>
+                                                            <Label for="title">
+                                                                Title of the post
+                                                            </Label>
+                                                            <Input
+                                                                type="text"
+                                                                name="posttitle"
+                                                                id="posttitle"
+                                                                placeholder={posts.title}
+                                                                onChange={this.onChange}
+                                                            />
+                                                            <Label for="content">
+                                                                Content of the post
+                                                            </Label>
+                                                            <Input
+                                                                type="textarea"
+                                                                name="postcontent"
+                                                                id="postcontent"
+                                                                placeholder={posts.content}
+                                                                onChange={this.onChange}
+                                                            />
+                                                        </FormGroup>
+                                                        <Button
+                                                            color="dark"
+                                                            className="mt-2"
+                                                            block
+                                                        >
+                                                            Add
+                                                        </Button>
+                                                    </Form>
+                                                </ModalBody>
+                                            </Modal>
+                                            : null
                                         : null}
 
                                     <p>
@@ -142,6 +235,26 @@ class PostDetail extends Component {
                                     <small>{date}</small>
                                 </ListGroupItem>
                             ) : null}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
                         </ListGroup>
                     </ListGroup>
@@ -166,4 +279,4 @@ const mapStateToProps = (state) => ({
 
 // this connect is gonna take two things
 // mapstatetoprops allows us to take our post state, in the reducer and then converts into a component property to be used in this component
-export default connect(mapStateToProps, { getSinglePost, deletePost, deleteComment, addComment, getPostComments })(PostDetail)
+export default connect(mapStateToProps, { getSinglePost, deletePost, deleteComment, addComment, getPostComments, updatePost })(PostDetail)

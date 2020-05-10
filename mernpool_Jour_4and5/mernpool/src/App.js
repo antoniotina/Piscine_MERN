@@ -7,6 +7,7 @@ import IndexNavbar from './components/IndexNavbar'
 import UserPosts from './components/posts/UserPosts'
 import PostDetail from './components/posts/PostDetail'
 import SearchPost from './components/posts/SearchPost'
+import UserList from './components/user/UserList'
 import { BrowserRouter as Router, Route } from 'react-router-dom'
 
 class App extends React.Component {
@@ -24,6 +25,7 @@ class App extends React.Component {
                         <Route path="/:id/:postid" exact component={PostDetail} />
                         <Route path="/search/user/posts/" exact component={SearchPost} />
                         <Route path="/:id" exact component={UserPosts} />
+                        <Route path="/" exact component={UserList} />
                     </Container>
                 </Provider>
             </Router>
